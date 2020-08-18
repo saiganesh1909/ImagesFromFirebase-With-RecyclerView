@@ -1,0 +1,57 @@
+package com.sample.imagesfromfirebasetorecyclerview;
+
+import android.content.Context;
+import android.view.LayoutInflater;
+import android.view.View;
+import android.view.ViewGroup;
+import android.widget.ImageView;
+import android.widget.TextView;
+
+import androidx.annotation.NonNull;
+import androidx.recyclerview.widget.RecyclerView;
+
+import com.squareup.picasso.Picasso;
+
+import java.util.List;
+
+class ImageAdapter extends RecyclerView.Adapter<ImageAdapter.ImageViewHolder> {
+    private Context context;
+    private List<Uploads>   uploads;
+
+    public ImageAdapter(Context context, List<Uploads> uploads) {
+        this.context = context;
+        this.uploads = uploads;
+    }
+
+    @NonNull
+    @Override
+    public ImageViewHolder onCreateViewHolder(@NonNull ViewGroup parent, int viewType) {
+        View v= LayoutInflater.from(context).inflate(R.layout.image,parent,false);
+        return new ImageViewHolder(v);
+    }
+
+    @Override
+    public void onBindViewHolder(@NonNull ImageViewHolder holder, int position) {
+        Uploads uploadcurrent=uploads.get(position);
+        holder.textView.setText(uploadcurrent.getTitle());
+        Picasso.get().load(uploadcurrent.getUrl()).placeholder(R.mipmap.ic_launcher).
+                fit().centerCrop().into(holder.imageView);
+
+
+    }
+
+    @Override
+    public int getItemCount() {
+        return uploads.size();
+    }
+
+    public class ImageViewHolder extends RecyclerView.ViewHolder{
+        public TextView textView;
+        public ImageView imageView;
+        public ImageViewHolder(@NonNull View itemView) {
+            super(itemView);
+            textView=itemView.findViewById(R.id.text_view);
+            imageView=itemView.findViewById(R.id.image_view);
+        }
+    }
+}
